@@ -17,4 +17,4 @@
  goes through and manually counts the number of unique offenders, in order to determine the accuracy of the estimations
 
 ## main.py
- gets the values returned by each of the estimators and compares the estimation times and accuracies of each
+ gets the values returned by each of the estimators and compares the estimation times and accuracies of each. this is the file you want to run.
