@@ -12,5 +12,5 @@ print(str(total_entries) + " entries in " + filename)
 
 # directly tally the number of unique plates
 print("Counting unique plates...")
-actual_unique = ActualCount.count_all_unique_plates(filename, total_entries)
-print(str(actual_unique) + " unique plates counted.")
+ActualCount.get_unique_using_sort(filename)
+#print(str(actual_unique) + " unique plates counted.")
