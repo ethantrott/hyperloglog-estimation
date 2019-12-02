@@ -23,18 +23,3 @@ def get_plates(filename):
                 count += 1
             else:
                 return
-
-# this will populate an array with a list of Plate IDs (unsorted and with duplicates)
-def fill_array_with_plates(filename, plates):
-    with open(filename, "r") as csvfile:
-        datareader = csv.reader(csvfile)
-        count = -1
-        for row in datareader:
-            if (count == -1):
-                #ignore the header row
-                count += 1
-            elif (row_limit == -1 or count < row_limit):
-                plates.append(row[1])
-                count += 1
-            else:
-                return

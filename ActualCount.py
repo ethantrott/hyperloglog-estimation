@@ -17,11 +17,11 @@ def count_all_unique_plates(filename, total_entries):
 def get_exact_unique_using_set(filename):
     #to sort we must load all entries into an array
     entries = []
-    csv_parser.fill_array_with_plates(filename, entries)
+    for plate in csv_parser.get_plates(filename):
+        entries.append(plate)
 
     #use set() to remove duplicates
     entries = set(entries)
 
     #return the number of elements that aren't duplicates
     return len(entries)
-
