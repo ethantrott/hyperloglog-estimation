@@ -5,16 +5,18 @@
 import os.path, time
 import csv_parser, ActualCount, LogLogEstimator, SuperLogLogEstimator, HyperLogLogEstimator
 
-#the file to parse for unique plates
+# the file to parse for unique plates
 filename = "nyc-dataset.csv"
+
 
 print ("LogLog, SuperLogLog, and HyperLogLog Demo")
 print ("by Dawsin Blanchard, Sam Braga, Brian Couture, and Ethan Trott\n")
 
-#check to make sure the dataset has been downloaded and named properly
+# check to make sure the dataset has been downloaded and named properly
 if not os.path.exists(filename):
     print("Error: Please download the dataset from https://data.cityofnewyork.us/api/views/faiq-9dfq/rows.csv?accessType=DOWNLOAD and place it in this directory as "+filename)
     exit()
+
 
 # count the total number of traffic violations
 print("Counting the total number of traffic violations..")
