@@ -1,4 +1,5 @@
-import csv_parser, time
+import time
+import csv_parser
 
 # this function is O(n^2). this would take a *very* long time to run on our dataset
 # we will not use this, except for subsets
@@ -21,23 +22,16 @@ def count_all_unique_plates(filename, total_entries):
 
     return len(unique)
 
-def get_unique_using_sort(filename):
+#determine the exact amount of unique elements using set() to remove duplicates
+#this is **much** faster than count_all_unique_plates()
+def get_exact_unique_using_set(filename):
     #to sort we must load all entries into an array
-    print("Loading data into array..")
-    start = time.time()
-
     entries = []
     csv_parser.fill_array_with_plates(filename, entries)
 
-    time_used = time.time() - start
-    print (str(len(entries))+ " entries loaded in "+str(time_used)+" seconds")
-    
-    start = time.time()
-    sorted_entries = sorted(entries)
-    time_used = time.time() - start
-    print (str(len(sorted_entries))+ " entries sorted in "+str(time_used)+" seconds")
-    with open("sorted.csv", "w") as txt_file:
-        for line in sorted_entries:
-            txt_file.write(line + "\n")
-    
-    # TODO: go through sorted array to see if there are duplicates, if so remove, then count
+    #use set() to remove duplicates
+    entries = set(entries)
+
+    #return the number of elements that aren't duplicates
+    return len(entries)
+
