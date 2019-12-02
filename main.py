@@ -26,7 +26,7 @@ time_used = time.time() - start
 print("There are " + str(total_entries) + " entries in " + filename + ", counted in "+str(time_used) +" seconds\n")
 
 # directly tally the number of unique plates
-print("Calculating exact amount of unique entries..")
+print("Calculating exact amount of unique plates..")
 start = time.time()
 exact_unique = ActualCount.get_exact_unique_using_set(filename)
 time_used = time.time() - start
