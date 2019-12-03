@@ -30,6 +30,15 @@ print("Calculating exact amount of unique plates..")
 start = time.time()
 exact_unique = ActualCount.get_exact_unique_using_set(filename)
 time_used = time.time() - start
-print ("There are exactly " + str(exact_unique)+ " unique plates, counted in "+str(time_used)+" seconds")
+print ("There are exactly " + str(exact_unique)+ " unique plates, counted in "+str(time_used)+" seconds\n")
 
-# TODO add approximations from LogLogEstimator, SuperLogLogEstimator, and HyperLogLogEstimator below
+# approximate number of plates using LogLog Estimation
+print("Approximating amount of unique plates using LogLog..")
+start = time.time()
+loglog_appx = LogLogEstimator.loglog(csv_parser.get_plates(filename), 5)
+time_used = time.time() - start
+percent_error = abs(loglog_appx - exact_unique) / exact_unique * 100
+print ("LogLog Estimation: " + str(loglog_appx)+ " unique plates, approximated in "+str(time_used)+" seconds")
+print ("Percent Error: " + str(percent_error) + "% \n")
+
+# TODO add approximations from SuperLogLogEstimator, and HyperLogLogEstimator below
