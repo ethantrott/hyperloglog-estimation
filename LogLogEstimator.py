@@ -1,26 +1,44 @@
-# Sam Braga
-def trailing_zeroes(num):
-  """Counts the number of trailing 0 bits in num."""
-  if num == 0:
-    return 32 # Assumes 32 bit integer inputs!
-  p = 0
-  while (num >> p) & 1 == 0:
-    p += 1
-  return p
+# Dawsin Blanchard, Sam Braga, Brian Couture, and Ethan Trott
+# COS226 University of Maine
 
-def loglog(values, k):
-  """Estimates the number of unique elements in the input set values.
+#returns an estimate of the cardinality of values using k bits for the buckets
+def LogLog(values, k):
+  #number of buckets
+  m = 2**k
+  #initialize buckets to 0
+  buckets = [0] * m
 
-  Arguments:
-    values: An iterator of hashable elements to estimate the cardinality of.
-    k: The number of bits of hash to use as a bucket number; there will be 2**k buckets.
-  """
-  num_buckets = 2 ** k
-  max_zeroes = [0] * num_buckets
+  #loop through all values
   for value in values:
-    h = hash(value)
-    bucket = h & (num_buckets - 1) # Mask out the k least significant bits as bucket ID
-    bucket_hash = h >> k
-    max_zeroes[bucket] = max(max_zeroes[bucket], trailing_zeroes(bucket_hash))
+    #get 32 bit hash of the value
+    temp = '{:032b}'.format(hash(value))
 
-  return 2 ** (float(sum(max_zeroes)) / num_buckets) * num_buckets * 0.79402
+    #get bucket{j} of the hash (first k bits)
+    j = temp[:k]
+    j = int(j, 2)
+
+    #get remaining bits (remaining bits after bucket)
+    data = temp[k:32]
+    #get rank of the first 1 in the remaining bits (number of trailing zeros)
+    rank = 1
+    for c in reversed(data):
+      if c == "0":
+        rank += 1
+      else:
+        break
+
+    #if rank is higher than the previous bucket value set it to the new rank
+    buckets[j] = max(buckets[j], rank)
+  
+  #get bucket average
+  average = sum(buckets) / m
+  #calculate estimate
+  estimate = m * 2 ** average
+
+  #bias converges to 0.79402 for larger numbers of buckets (k > 5)
+  #since we want to be using more buckets anyways, and the percise value of the bias is costly to calculate. We will use this convergance as an estimate of the bias
+  BIAS = 0.397011808
+  #correct for bias
+  estimate = BIAS * estimate
+
+  return estimate

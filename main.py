@@ -10,7 +10,7 @@ filename = "nyc-dataset.csv"
 
 # the number of bits to use in identifying buckets
 # 2**ex_buckets = number of buckets
-ex_buckets = 4
+ex_buckets = 8
 
 print ("LogLog, SuperLogLog, and HyperLogLog Demo")
 print ("by Dawsin Blanchard, Sam Braga, Brian Couture, and Ethan Trott\n")
@@ -38,10 +38,26 @@ print ("There are exactly " + str(exact_unique)+ " unique plates, counted in "+s
 # approximate number of plates using LogLog Estimation
 print("Approximating amount of unique plates using LogLog..")
 start = time.time()
-loglog_appx = LogLogEstimator.loglog(csv_parser.get_plates(filename), ex_buckets)
+loglog_appx = LogLogEstimator.LogLog(csv_parser.get_plates(filename), ex_buckets)
 time_used = time.time() - start
 percent_error = abs(loglog_appx - exact_unique) / exact_unique * 100
 print ("LogLog Estimation: " + str(loglog_appx)+ " unique plates, approximated in "+str(time_used)+" seconds")
 print ("Percent Error: " + str(percent_error) + "% \n")
 
-# TODO add approximations from SuperLogLogEstimator, and HyperLogLogEstimator below
+# approximate number of plates using SuperLogLog Estimation
+print("Approximating amount of unique plates using SuperLogLog..")
+start = time.time()
+sloglog_appx = SuperLogLogEstimator.SuperLogLog(csv_parser.get_plates(filename), ex_buckets)
+time_used = time.time() - start
+percent_error = abs(sloglog_appx - exact_unique) / exact_unique * 100
+print ("SuperLogLog Estimation: " + str(sloglog_appx)+ " unique plates, approximated in "+str(time_used)+" seconds")
+print ("Percent Error: " + str(percent_error) + "% \n")
+
+# approximate number of plates using HyperLogLog Estimation
+print("Approximating amount of unique plates using HyperLogLog..")
+start = time.time()
+hloglog_appx = HyperLogLogEstimator.HyperLogLog(csv_parser.get_plates(filename), ex_buckets)
+time_used = time.time() - start
+percent_error = abs(hloglog_appx - exact_unique) / exact_unique * 100
+print ("HyperLogLog Estimation: " + str(hloglog_appx)+ " unique plates, approximated in "+str(time_used)+" seconds")
+print ("Percent Error: " + str(percent_error) + "% \n")

@@ -1,3 +1,6 @@
+# Dawsin Blanchard, Sam Braga, Brian Couture, and Ethan Trott
+# COS226 University of Maine
+
 import time
 import csv_parser
 

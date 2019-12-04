@@ -1,3 +1,6 @@
+# Dawsin Blanchard, Sam Braga, Brian Couture, and Ethan Trott
+# COS226 University of Maine
+
 import csv
 
 # this variable allows us to limit the number of rows we parse
