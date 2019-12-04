@@ -8,6 +8,9 @@ import csv_parser, ActualCount, LogLogEstimator, SuperLogLogEstimator, HyperLogL
 # the file to parse for unique plates
 filename = "nyc-dataset.csv"
 
+# the number of bits to use in identifying buckets
+# 2**ex_buckets = number of buckets
+ex_buckets = 4
 
 print ("LogLog, SuperLogLog, and HyperLogLog Demo")
 print ("by Dawsin Blanchard, Sam Braga, Brian Couture, and Ethan Trott\n")
@@ -35,7 +38,7 @@ print ("There are exactly " + str(exact_unique)+ " unique plates, counted in "+s
 # approximate number of plates using LogLog Estimation
 print("Approximating amount of unique plates using LogLog..")
 start = time.time()
-loglog_appx = LogLogEstimator.loglog(csv_parser.get_plates(filename), 5)
+loglog_appx = LogLogEstimator.loglog(csv_parser.get_plates(filename), ex_buckets)
 time_used = time.time() - start
 percent_error = abs(loglog_appx - exact_unique) / exact_unique * 100
 print ("LogLog Estimation: " + str(loglog_appx)+ " unique plates, approximated in "+str(time_used)+" seconds")
