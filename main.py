@@ -2,7 +2,7 @@
 # Dawsin Blanchard, Sam Braga, Brian Couture, and Ethan Trott
 # COS226 University of Maine
 
-import os.path, time, sys
+import sys, os.path, time, statistics
 import csv_parser, ActualCount, FlajoletMartinEstimator, LogLogEstimator, HyperLogLogEstimator
 
 # the file to parse for unique plates
@@ -30,13 +30,14 @@ else:
         
     print("Creating plate hashes..")
     plate_hashes = csv_parser.create_hashes(filename)
-print(str(len(plate_hashes))+" hashes loaded.\n")
+print(str(len(plate_hashes))+" plate hashes loaded.\n")
 
 
 # directly tally the number of unique plates
-print("Calculating exact amount of unique plates..\n")
+print("Calculating exact amount of unique plates..")
 exact_unique = ActualCount.get_exact_unique_using_set(filename)
-  
+print("There are exactly "+str(exact_unique)+" unique plates..\n")
+
 #run tests 8 times
 fm = []
 ll = []
@@ -66,22 +67,29 @@ for i in range(0, 8):
 
 #test formatter
 def printTest(label, expected, actual):
+  #print header
   print('*'*50)
   print('{s:{c}^{n}}'.format(s=f' {label} ', n=50, c='*'))
   print('*'*50)
   print()
 
+  #print results
   print('{s:{c}^{n}}'.format(s=' Expected result ', n=50, c='-'))
   print(expected)
   print('{s:{c}^{n}}'.format(s=' Actual results ', n=50, c='-'))
   print("\n".join("{0:.0f}".format(x) for x in actual))
-  print('{s:{c}^{n}}'.format(s=' Average result ', n=50, c='-'))
-  average = sum(actual) / len(actual)
-  print("{0:.0f}".format(average))
+  print('{s:{c}^{n}}'.format(s=' Mean result ', n=50, c='-'))
+  print("{0:.0f}".format(statistics.mean(actual)))
+  print()
+  
+  #print statistics
   print('{s:{c}^{n}}'.format(s=' Difference ', n=50, c='-'))
-  print("{0:.0f}".format(expected - average))
+  print("{0:.0f}".format(expected - statistics.mean(actual)))
   print('{s:{c}^{n}}'.format(s=' Percent Error ', n=50, c='-'))
-  print("{0:.2%}".format(abs(expected - average) / expected))
+  print("{0:.2%}".format(abs(expected - statistics.mean(actual)) / expected))
+  print('{s:{c}^{n}}'.format(s=' Standard Deviation ', n=50, c='-'))
+  print("{0:.0f}".format(statistics.pstdev(actual)))
+  print()
   print()
 
 #print results
