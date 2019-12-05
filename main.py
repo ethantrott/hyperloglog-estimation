@@ -13,7 +13,7 @@ filename = "nyc-dataset.csv"
 ex_buckets = 8
 
 # number of runs to average with different hashes
-loops_to_run = 1
+loops_to_run = 8
 
 print ("LogLog, SuperLogLog, and HyperLogLog Demo")
 print ("by Dawsin Blanchard, Sam Braga, Brian Couture, and Ethan Trott\n")

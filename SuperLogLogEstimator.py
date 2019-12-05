@@ -13,9 +13,9 @@ def SuperLogLog(hashes, off, k):
   #loop through all hashes
   for hash in hashes:
     #encode the hash in binary
-    hash = bin(int(hash, 16))
-
-    temp = hash[len(hash)-(32+off):len(hash)-off]
+    hash = '{:256b}'.format(int(hash, 16)).replace(' ','0')
+    
+    temp = hash[len(hash)-(32+off)+1:len(hash)-off]
 
     #get bucket{j} of the hash (first k bits)
     j = temp[:k]
