@@ -1,19 +1,21 @@
 # Dawsin Blanchard, Sam Braga, Brian Couture, and Ethan Trott
 # COS226 University of Maine
 
-import math
+import math, hashlib
 
 #returns an estimate of the cardinality of values using k bits for the buckets
-def SuperLogLog(values, k):
+def SuperLogLog(hashes, off, k):
   #number of buckets
   m = 2**k
   #initialize buckets to 0
   buckets = [0] * m
 
-  #loop through all values
-  for value in values:
-    #get 32 bit hash of the value
-    temp = '{:032b}'.format(hash(value))
+  #loop through all hashes
+  for hash in hashes:
+    #encode the hash in binary
+    hash = bin(int(hash, 16))
+
+    temp = hash[len(hash)-(32+off):len(hash)-off]
 
     #get bucket{j} of the hash (first k bits)
     j = temp[:k]
@@ -54,3 +56,10 @@ def SuperLogLog(values, k):
   estimate = BIAS * estimate
 
   return estimate
+
+#find the average estimate for n different offsets of the hash with k bits for buckets
+def average_with_different_hashes(hashes, k, n):
+  total = 0
+  for i in range(n):
+    total += SuperLogLog(hashes, i*32, k)
+  return total/n

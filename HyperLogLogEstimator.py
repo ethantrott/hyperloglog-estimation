@@ -1,17 +1,21 @@
 # Dawsin Blanchard, Sam Braga, Brian Couture, and Ethan Trott
 # COS226 University of Maine
 
+import hashlib
+
 #returns an estimate of the cardinality of values using k bits for the buckets
-def HyperLogLog(values, k):
+def HyperLogLog(hashes, off, k):
   #number of buckets
-  m = 2**k
+  m = 2 ** k
   #initialize buckets to 0
   buckets = [0] * m
 
-  #loop through all values
-  for value in values:
-    #get 32 bit hash of the value
-    temp = '{:032b}'.format(hash(value))
+  #loop through all hashes
+  for hash in hashes:
+    #encode the hash in binary
+    hash = bin(int(hash, 16))
+
+    temp = hash[len(hash)-(32+off):len(hash)-off]
 
     #get bucket{j} of the hash (first k bits)
     j = temp[:k]
@@ -36,14 +40,22 @@ def HyperLogLog(values, k):
   for bucket in buckets:
     total += 2 ** (-1 * bucket)
   z = total ** -1
-  
+
   #calculate estimate
   estimate = (m ** 2) * z
 
-  #this is an algebraic approximation for the bias dependant on the number of buckets
-  bias = 0.7213/(1+1.079/m)
+  #bias can be approximated with the formula 0.7213 / (1 + (1.079/2^k)) for k > 5
+  #since we want to be using more buckets anyways, and the percise value of the bias is costly to calculate. We will use this as an estimate of the bias
+  BIAS = 0.7213 / (1 + (1.079 / m))
 
   #correct for bias
-  estimate = bias * estimate
+  estimate = BIAS * estimate
 
   return estimate
+
+#find the average estimate for n different offsets of the hash with k bits for buckets
+def average_with_different_hashes(hashes, k, n):
+  total = 0
+  for i in range(n):
+    total += HyperLogLog(hashes, i*32, k)
+  return total/n

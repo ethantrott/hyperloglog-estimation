@@ -1,7 +1,7 @@
 # Dawsin Blanchard, Sam Braga, Brian Couture, and Ethan Trott
 # COS226 University of Maine
 
-import csv
+import csv, hashlib
 
 # this variable allows us to limit the number of rows we parse
 # (for convenience in debugging)
@@ -26,3 +26,23 @@ def get_plates(filename):
                 count += 1
             else:
                 return
+
+#creates the SHA256 hashes of the plates and saves them to hashes.csv
+def create_hashes(filename):
+    hashes = []
+    with open('hashes.csv', 'w') as file:
+        for plate in get_plates(filename):
+            #get the sha256 hash of the value
+            hash = hashlib.sha256(str(plate).encode('utf-8'))
+            #store the hash in the list
+            hashes.append(hash.hexdigest())
+            #write the hash to the file
+            file.write(hash.hexdigest()+"\n")
+    return hashes
+
+def load_hashes():
+    f = open("hashes.csv", "r")
+    if (row_limit > 0):
+        return f.readlines(row_limit*65)
+    else:
+        return f.readlines()
