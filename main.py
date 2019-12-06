@@ -3,7 +3,8 @@
 # COS226 University of Maine
 
 import sys, os.path, time, statistics
-import csv_parser, ActualCount, FlajoletMartinEstimator, LogLogEstimator, HyperLogLogEstimator
+import csv_parser, ActualCount
+import FlajoletMartinEstimator, LogLogEstimator, SuperLogLogEstimator, HyperLogLogEstimator
 
 # the file to parse for unique plates
 filename = "nyc-dataset.csv"
@@ -42,6 +43,7 @@ print("There are exactly "+str(exact_unique)+" unique plates..\n")
 #run tests and store results
 fm = []
 ll = []
+sll = []
 hll = []
 for i in range(0, loops_to_run):
     #print loading message
@@ -61,6 +63,7 @@ for i in range(0, loops_to_run):
     #approximate values and add to results array
     fm.append(FlajoletMartinEstimator.FlajoletMartin(hashes))
     ll.append(LogLogEstimator.LogLog(hashes, ex_buckets))
+    sll.append(SuperLogLogEstimator.SuperLogLog(hashes, ex_buckets))
     hll.append(HyperLogLogEstimator.HyperLogLog(hashes, ex_buckets))
 
     #reset line
@@ -96,4 +99,5 @@ def printTest(label, expected, actual):
 #print results
 printTest("Flajolet-Martin", exact_unique, fm)
 printTest("LogLog", exact_unique, ll)
+printTest("SuperLogLog", exact_unique, sll)
 printTest("HyperLogLog", exact_unique, hll)
