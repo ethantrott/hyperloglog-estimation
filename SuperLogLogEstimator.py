@@ -46,8 +46,8 @@ def SuperLogLog(hashes, k):
   estimate = m * 2 ** average
 
   #the theoretical calculation of the bias factor for SLL is unknown
-  #however, rough empircal tuning gives us a coefficient of around 0.7625
-  BIAS = 0.7625
+  #however, rough empircal tuning gives us a coefficient of around 0.764
+  BIAS = 0.764
   #correct for bias
   estimate = BIAS * estimate
 
