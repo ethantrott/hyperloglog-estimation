@@ -1,4 +1,4 @@
-# The Evolution of HyperLogLog Estimation
+# The Evolution of the HyperLogLog Estimator
  python implementations of Flajolet-Martin, LogLog, SuperLogLog, and HyperLogLog estimation algorithms, used to estimate the cardinality of unique traffic violations in NYC in the 2019 fiscal year
 
 ## the dataset (nyc-dataset.csv)
