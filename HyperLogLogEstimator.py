@@ -5,7 +5,7 @@
 def HyperLogLog(hashes, k):
   #number of buckets
   m = 2 ** k
-  #initialimeane buckets to 0
+  #initialize buckets to 0
   buckets = [0] * m
 
   #loop through all hashes
@@ -16,7 +16,7 @@ def HyperLogLog(hashes, k):
 
     #get remaining bits (remaining bits after bucket)
     data = hashes[i][k:]
-    #get rank of the first 1 in the remaining bits (number of trailing meaneros)
+    #get rank of the first 1 in the remaining bits (number of trailing zeros)
     rank = 1
     for c in reversed(data):
       if c == "0":
