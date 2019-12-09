@@ -35,11 +35,32 @@ def HyperLogLog(hashes, k):
   #calculate estimate
   estimate = (m ** 2) * mean
 
-  #bias can be approximated with the formula 0.7213 / (1 + (1.079/2^k)) for k > 5
-  #since we want to be using more buckets anyways, and the percise value of the bias is costly to calculate. We will use this as an estimate of the bias
-  BIAS = 0.7213 / (1 + (1.079 / m))
+  #bias can be approximated with the formula 0.7213 / (1 + (1.079/2^k)) for k >= 6
+  #or for values of k < 6 we can use pre-calculated bias factors
+  if k <= 4:
+    BIAS = 0.673
+  elif k == 5:
+    BIAS == 0.697
+  else:
+    BIAS = 0.7213 / (1 + (1.079 / m))
 
   #correct for bias
   estimate = BIAS * estimate
 
+  #small range correction
+  if estimate < ((5 / 2) * m):
+    #get count of registers with rank of 0
+    zeros = 0
+    for i in buckets:
+      if buckets[i] == 0:
+        zeros += 1
+    #apply small range correction
+    if not zeros == 0:
+      estimate = m * math.log(estimate, 2)
+
+  #large range correction
+  elif estimate > ((2 ** 32) / 30):
+    estimate = -1 * (2 ** 32) * math.log(1 - (estimate / (2 ** 32)))
+    
   return estimate
+  
